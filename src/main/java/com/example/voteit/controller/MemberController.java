@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -70,15 +71,11 @@ public class MemberController {
     }
 
     //회원 정보 조회
-    @GetMapping("/voteit/member/{id}")
-    public String show(@PathVariable("id") Long id, Model model) {
-        log.info("id = {} ", id);
-        //1. id article
-        //Optional<Article> article = articleRepository.findById(id);
-        Member member = memberRepository.findById(id).orElse(null);
-        //2.
-        model.addAttribute("member", member);
-        //3.
+    @GetMapping("/voteit/members")
+    public String show(Model model) {
+        List<Member> memberList = memberRepository.findAll();
+
+        model.addAttribute("memberList", memberList);
         return "member/detail";
     }
 }
