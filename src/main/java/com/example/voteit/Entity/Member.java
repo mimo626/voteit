@@ -4,13 +4,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.ToString;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 @Entity
 @ToString
 @Slf4j
-public class VoteIt {
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,18 +25,13 @@ public class VoteIt {
     private String password;
 
     // 생성자
-    public VoteIt(String name, String userid, String password) {
+    public Member(String name, String userid, String password) {
         this.name = name;
         this.userid = userid;
         this.password = password;
     }
 
-    // 기본 생성자도 필요 (JPA가 사용함)
-    public VoteIt() {}
-
     public void logInfo() {
         log.info("name: {}, userid: {}, password: {}", name, userid, password);
     }
-
-    // Getter들 필요 시 추가
 }
