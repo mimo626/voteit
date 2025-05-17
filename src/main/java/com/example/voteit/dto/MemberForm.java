@@ -1,6 +1,6 @@
 package com.example.voteit.dto;
 
-import com.example.voteit.Entity.VoteIt;
+import com.example.voteit.Entity.Member;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -10,14 +10,14 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 @AllArgsConstructor
 @Slf4j
-public class VoteItForm {
+public class MemberForm {
 
     private String name;
     private String userid;           //
     private String password;
 
-    public VoteIt toEntity() {
-        return new VoteIt(name,userid,password);
+    public Member toEntity() {
+        return new Member(name,userid,password);
     }
 
     public void logInfo() {
