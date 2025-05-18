@@ -30,7 +30,7 @@ public class Question {
     private int agreecount;
     private int disagreecount;
 
-    public Question(String title, String content, String userid, LocalDate deadline, LocalDate regcate, String state, int agreecount, int disagreecount) {
+    public Question(String title, String content, String userid, LocalDate deadline, LocalDate regdate, String state, int agreecount, int disagreecount) {
         this.title = title;
         this.content = content;
         this.userid = userid;
