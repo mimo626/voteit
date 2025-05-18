@@ -10,8 +10,6 @@ import java.util.Optional;
 @Repository
 public interface QuestionRepository extends CrudRepository<Question, Long> {
 
-    Optional<Question> findQuestionByTitle(String title);
-
     @Override
     List<Question> findAll();
 }

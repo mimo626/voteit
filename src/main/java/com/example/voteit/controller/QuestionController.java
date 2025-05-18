@@ -1,11 +1,9 @@
 package com.example.voteit.controller;
 
-import com.example.voteit.Entity.Member;
 import com.example.voteit.Entity.Question;
 import com.example.voteit.Repository.QuestionRepository;
 import com.example.voteit.dto.QuestionForm;
 import jakarta.servlet.http.HttpSession;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Controller
