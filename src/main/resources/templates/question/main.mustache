@@ -15,18 +15,20 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 {{>layouts/header}}
-<table class="table">
-    <thead>
-    <tr><th>Title</th><th>UserId</th><th>DeadLine</th><th>RegDate</th><th>State</th></tr>
-    </thead>
-    <tbody>
-    {{#questionList}}
-        <tr>
-            <td><a href="/articles/{{id}}">{{title}}</a></td><td>{{userid}}</td><td>{{deadline}}</td><th>{{regdate}}</th><th>{{state}}</th>
-        </tr>
-    {{/questionList}}
-    </tbody>
-</table>
+<div class="table-wrapper">
+    <table class="table">
+        <thead>
+        <tr><th>Title</th><th>UserId</th><th>DeadLine</th><th>RegDate</th><th>State</th></tr>
+        </thead>
+        <tbody>
+        {{#questionList}}
+            <tr>
+                <td><a href="/voteit/detail/{{id}}">{{title}}</a></td><td>{{userid}}</td><td>{{deadline}}</td><th>{{regdate}}</th><th>{{state}}</th>
+            </tr>
+        {{/questionList}}
+        </tbody>
+    </table>
+</div>
 {{>layouts/footer}}
 
 <!-- Bootstrap JS -->
