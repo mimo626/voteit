@@ -3,6 +3,8 @@ package com.example.voteit.controller;
 import com.example.voteit.Entity.Member;
 import com.example.voteit.Entity.Question;
 import com.example.voteit.Repository.QuestionRepository;
+import com.example.voteit.dto.QuestionForm;
+import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -31,14 +35,50 @@ public class QuestionController {
 
     // 질문 등록 페이지
     @GetMapping("/voteit/questionAdd")
-    public String questionAdd() {
+    public String questionAdd(HttpSession session) {
+        // 로그인 사용자 정보 가져오기
+        Object loginMember = session.getAttribute("LOGIN_MEMBER");
+        if (loginMember == null) {
+            return "redirect:/voteit/login"; // 로그인 안되어 있을 경우 처리
+        }
         return "question/add";
     }
 
     // 질문 등록 처리
     @PostMapping("/voteit/questionAdd")
-    public String questionAddProcess() {
+    public String questionAddProcess(QuestionForm questionForm, Model model, HttpSession session) {
+        String error = validateQuestionForm(questionForm);
+        if (error != null) {
+            model.addAttribute("questionAddError", error);
+            log.info("질문 등록 오류 - {}", error);
+            return "question/add";
+        }
+        questionForm.setUserid(session.getAttribute("LOGIN_MEMBER").toString());
+        questionForm.setRegdate(LocalDate.now());
+        questionForm.setState("투표 중");
+        questionForm.setAgreecount(0);
+        questionForm.setDisagreecount(0);
 
+        Question question = questionForm.toEntity();
+        question.logInfo();
+
+        Question saved = questionRepository.save(question);
+
+        log.info("질문 등록 성공");
         return "redirect:/voteit/main";
     }
+
+    private String validateQuestionForm(QuestionForm form) {
+        if (form.getTitle() == null || form.getTitle().trim().isEmpty()) {
+            return "제목을 입력해 주세요.";
+        }
+        if (form.getContent() == null || form.getContent().trim().isEmpty()) {
+            return "내용을 입력해 주세요.";
+        }
+        if (form.getDeadline() == null) {
+            return "마감기한을 선택해 주세요.";
+        }
+        return null;
+    }
 }
+
