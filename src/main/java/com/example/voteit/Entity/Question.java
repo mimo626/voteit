@@ -21,25 +21,25 @@ public class Question {
     private Long id;
     private String title;
     private String content;
-    private String userId;
-    private String deadLine;
-    private String regDate;
-    private QuestionState state;
-    private int agreeCount;
-    private int disagreeCount;
+    private String userid;
+    private String deadline;
+    private String regdate;
+    private String state;
+    private int agreecount;
+    private int disagreecount;
 
-    public Question(String title, String content, String userId, String deadLine, String regDate, QuestionState state, int agreeCount, int disagreeCount) {
+    public Question(String title, String content, String userid, String deadline, String regcate, String state, int agreecount, int disagreecount) {
         this.title = title;
         this.content = content;
-        this.userId = userId;
-        this.deadLine = deadLine;
-        this.regDate = regDate;
+        this.userid = userid;
+        this.deadline = deadline;
+        this.regdate = regdate;
         this.state = state;
-        this.agreeCount = agreeCount;
-        this.disagreeCount = disagreeCount;
+        this.agreecount = agreecount;
+        this.disagreecount = disagreecount;
     }
 
     public void logInfo() {
-        log.info("title: {}, content: {}, userId: {}, deadLine: {}, regDate: {}, state: {}, agreeCount: {}, disagreeCount: {}", title, content, userId, deadLine, regDate, state, agreeCount, disagreeCount);
+        log.info("title: {}, content: {}, userId: {}, deadLine: {}, regDate: {}, state: {}, agreeCount: {}, disagreeCount: {}", title, content, userid, deadline, regdate, state, agreecount, disagreecount);
     }
 }
