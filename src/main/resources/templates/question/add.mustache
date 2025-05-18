@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Signup</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- 사용자 정의 스타일 -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+{{>layouts/header}}
+
+<div class="flex-grow-1 d-flex justify-content-center align-items-start" style="padding-top: 60px;">
+    <form class="border rounded p-4 bg-white shadow custom-form" action="/voteit/questionAdd" method="post">
+        <h3 class="text-center mb-4">질문 등록</h3>
+        <table class="table table-borderless mb-4">
+            <tbody>
+            <tr class="mb-4">
+                <td><label class="form-label" for="title">제목</label></td>
+                <td><input class="form-control" type="text" id="title" name="title"/></td>
+            </tr>
+            <tr class="mb-4">
+                <td><label class="form-label" for="content">내용</label></td>
+                <td><input class="form-control" type="text" id="content" name="content"/></td>
+            </tr>
+            <tr class="mb-4">
+                <td><label class="form-label" for="deadline">마감기한</label></td>
+                <td><input class="form-control" type="date" id="deadline" name="deadline"/></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="text-center">
+            <button type="submit" class="btn btn-success" id="submitBtn" disabled>질문 등록</button>
+        </div>
+    </form>
+</div>
+{{>layouts/footer}}
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
