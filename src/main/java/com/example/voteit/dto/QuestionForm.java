@@ -1,7 +1,6 @@
 package com.example.voteit.dto;
 
 import com.example.voteit.Entity.Question;
-import com.example.voteit.Entity.QuestionState;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,18 +13,18 @@ import lombok.extern.slf4j.Slf4j;
 public class QuestionForm {
     private String title;
     private String content;
-    private String userId;
-    private String deadLine;
-    private String regDate;
-    private QuestionState state;
-    private int agreeCount;
-    private int disagreeCount;
+    private String userid;
+    private String deadline;
+    private String regdate;
+    private String state;
+    private int agreecount;
+    private int disagreecount;
 
     public Question toEntity() {
-        return new Question(title, content, userId, deadLine, regDate, state, agreeCount, disagreeCount);
+        return new Question(title, content, userid, deadline, regdate, state, agreecount, disagreecount);
     }
 
     public void logInfo() {
-        log.info("title: {}, content: {}, userId: {}, deadLine: {}, regDate: {}, state: {}, agreeCount: {}, disagreeCount: {}", title, content, userId, deadLine, regDate, state, agreeCount, disagreeCount);
+        log.info("title: {}, content: {}, userId: {}, deadLine: {}, regDate: {}, state: {}, agreeCount: {}, disagreeCount: {}", title, content, userid, deadline, regdate, state, agreecount, disagreecount);
     }
 }
