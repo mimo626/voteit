@@ -1,5 +1,6 @@
 package com.example.voteit.controller;
 
+import com.example.voteit.cls.MemberService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import com.example.voteit.Entity.Member;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -80,4 +82,34 @@ public class MemberController {
         model.addAttribute("memberList", memberList);
         return "member/detail";
     }
+
+    @Autowired
+    private MemberService memberService;
+
+    // 프로필 화면
+    @GetMapping("/voteit/profile")
+    public String profile(HttpSession session, RedirectAttributes redirectAttributes, Model model) {
+        Object loginMember = session.getAttribute("LOGIN_MEMBER");
+        if (loginMember == null) {
+            redirectAttributes.addFlashAttribute("loginMessage", "로그인 후 확인이 가능합니다.");
+            return "redirect:/voteit/login";
+        }
+
+        // 현재 loginMember는 String (userid) 형태
+        String userid = loginMember.toString();
+
+        // DB에서 userid로 회원 정보 조회
+        Member member = memberService.findByUserid(userid);
+        if (member == null) {
+            redirectAttributes.addFlashAttribute("loginMessage", "존재하지 않는 회원입니다.");
+            return "redirect:/voteit/login";
+        }
+
+        model.addAttribute("name", member.getName());
+        model.addAttribute("userid", member.getUserid());
+        model.addAttribute("password", member.getPassword()); // 비밀번호 마스킹
+
+        return "member/profile";
+    }
 }
+
