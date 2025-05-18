@@ -13,3 +13,4 @@ public interface QuestionRepository extends CrudRepository<Question, Long> {
     @Override
     List<Question> findAll();
 }
+
