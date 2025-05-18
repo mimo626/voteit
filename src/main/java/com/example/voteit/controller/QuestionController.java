@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -35,10 +36,11 @@ public class QuestionController {
 
     // 질문 등록 페이지
     @GetMapping("/voteit/questionAdd")
-    public String questionAdd(HttpSession session) {
+    public String questionAdd(HttpSession session, RedirectAttributes redirectAttributes) {
         // 로그인 사용자 정보 가져오기
         Object loginMember = session.getAttribute("LOGIN_MEMBER");
         if (loginMember == null) {
+            redirectAttributes.addFlashAttribute("loginMessage", "로그인 후 질문 등록이 가능합니다.");
             return "redirect:/voteit/login"; // 로그인 안되어 있을 경우 처리
         }
         return "question/add";
