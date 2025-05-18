@@ -35,8 +35,11 @@
             </tr>
             </tbody>
         </table>
+        {{#questionAddError}}
+            <p style="color:red">{{questionAddError}}</p>
+        {{/questionAddError}}
         <div class="text-center">
-            <button type="submit" class="btn btn-success" id="submitBtn" disabled>질문 등록</button>
+            <button type="submit" class="btn btn-success" id="submitBtn">질문 등록</button>
         </div>
     </form>
 </div>
