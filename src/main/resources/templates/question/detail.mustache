@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Main</title>
+    <title>Question Detail</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -13,21 +13,41 @@
     <!-- 사용자 정의 스타일 -->
     <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 {{>layouts/header}}
-<table class="table">
-    <thead>
-    <tr><th>userId</th><th>Name</th><th>Password</th></tr>
-    </thead>
-    <tbody>
-    {{#questionList}}
+
+<div class="table-wrapper">
+    <table class="table">
+        <thead>
+        <tr><th>제목</th><th>작성자</th><th>마감일</th><th>등록일</th><th>상태</th></tr>
+        </thead>
+        <tbody>
         <tr>
-            <th>{{userid}}</th><td>{{name}}</td><td>{{password}}</td>
+            <td>{{question.title}}</td>
+            <td>{{question.userid}}</td>
+            <td>{{question.deadline}}</td>
+            <td>{{question.regdate}}</td>
+            <td>{{question.state}}</td>
         </tr>
-    {{/questionList}}
-    </tbody>
-</table>
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead>
+        <tr><th>내용</th><th>찬성 수</th><th>반대 수</th></tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{question.content}}</td>
+            <td>{{question.agreecount}}</td>
+            <td>{{question.disagreecount}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 {{>layouts/footer}}
+
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
