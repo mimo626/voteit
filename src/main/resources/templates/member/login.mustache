@@ -17,7 +17,13 @@
 <!-- 로그인 폼 위치 조정 -->
 <body class="d-flex flex-column min-vh-100">
 {{>layouts/header}}
-
+{{#loginMessage}}
+    <script>
+        window.addEventListener("DOMContentLoaded", function() {
+            alert('{{loginMessage}}');
+        });
+    </script>
+{{/loginMessage}}
 <div class="flex-grow-1 d-flex justify-content-center align-items-start" style="padding-top: 60px;">
     <form class="border rounded p-4 bg-white shadow custom-form" action="/voteit/login" method="post">
         <h3 class="text-center mb-4">로그인</h3>
