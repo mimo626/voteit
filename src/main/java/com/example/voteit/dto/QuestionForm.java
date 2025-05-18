@@ -4,6 +4,8 @@ import com.example.voteit.Entity.Question;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @ToString
@@ -14,8 +16,8 @@ public class QuestionForm {
     private String title;
     private String content;
     private String userid;
-    private String deadline;
-    private String regdate;
+    private LocalDate deadline;
+    private LocalDate regdate;
     private String state;
     private int agreecount;
     private int disagreecount;
