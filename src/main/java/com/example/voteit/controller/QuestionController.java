@@ -46,27 +46,31 @@ public class QuestionController {
     // 질문 등록 처리
     @PostMapping("/voteit/questionAdd")
     public String questionAddProcess(QuestionForm questionForm, Model model, HttpSession session) {
+        // 입력 필드 에러 처리
         String error = validateQuestionForm(questionForm);
         if (error != null) {
             model.addAttribute("questionAddError", error);
             log.info("질문 등록 오류 - {}", error);
             return "question/add";
         }
+
+        // 질문에 내용 저장
         questionForm.setUserid(session.getAttribute("LOGIN_MEMBER").toString());
         questionForm.setRegdate(LocalDate.now());
-        questionForm.setState("투표 중");
+        questionForm.setState("진행 중");
         questionForm.setAgreecount(0);
         questionForm.setDisagreecount(0);
 
+        // DB에 질문 데이터 저장
         Question question = questionForm.toEntity();
         question.logInfo();
-
         Question saved = questionRepository.save(question);
-
         log.info("질문 등록 성공");
+
         return "redirect:/voteit/main";
     }
 
+    // 미입력 시 에러 처리
     private String validateQuestionForm(QuestionForm form) {
         if (form.getTitle() == null || form.getTitle().trim().isEmpty()) {
             return "제목을 입력해 주세요.";
