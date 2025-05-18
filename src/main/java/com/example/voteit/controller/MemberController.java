@@ -1,5 +1,6 @@
 package com.example.voteit.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import com.example.voteit.Entity.Member;
 import com.example.voteit.Repository.MemberRepository;
@@ -49,7 +50,7 @@ public class MemberController {
 
     //로그인 실행 처리
     @PostMapping("/voteit/login")
-    public String login(MemberForm memberForm, Model model) {
+    public String login(MemberForm memberForm, Model model, HttpSession session) {
         memberForm.logInfo();
         Optional<Member> memberId = memberRepository.findMemberByUserid(memberForm.getUserid());
         if (memberId.isEmpty()) {
@@ -64,6 +65,7 @@ public class MemberController {
                 log.info("로그인 에러-비밀번호 오류");
                 return "member/login";
             }
+            session.setAttribute("LOGIN_MEMBER", member.getUserid());
             log.info("로그인 성공");
             return "redirect:/voteit/main";
         }
