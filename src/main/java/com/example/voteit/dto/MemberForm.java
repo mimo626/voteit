@@ -17,11 +17,11 @@ public class MemberForm {
     private String password;
 
     public Member toEntity() {
-        return new Member(name,userid,password);
+        return new Member(name, userid,password);
     }
 
     public void logInfo() {
-        log.info("name: {}, id: {}, password: {}", name,userid,password);
+        log.info("name: {}, id: {}, password: {}", name, userid,password);
     }
 
 }
