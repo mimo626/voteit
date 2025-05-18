@@ -3,11 +3,13 @@ package com.example.voteit.controller;
 import com.example.voteit.Entity.Member;
 import com.example.voteit.Entity.Question;
 import com.example.voteit.Repository.QuestionRepository;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -25,5 +27,18 @@ public class QuestionController {
 
         model.addAttribute("questionList", questionList);
         return "question/main";
+    }
+
+    // 질문 등록 페이지
+    @GetMapping("/voteit/questionAdd")
+    public String questionAdd() {
+        return "question/add";
+    }
+
+    // 질문 등록 처리
+    @PostMapping("/voteit/questionAdd")
+    public String questionAddProcess() {
+
+        return "redirect:/voteit/main";
     }
 }
