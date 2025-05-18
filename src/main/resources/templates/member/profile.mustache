@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Signup</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- 사용자 정의 스타일 -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+{{>layouts/header}}
+
+<!-- 프로필 화면 -->
+<div class="container my-5 d-flex flex-column align-items-center">
+    <!-- 프로필 사진 -->
+    <div style="width: 150px; height: 150px; overflow: hidden; border-radius: 50%; margin-bottom: 20px;">
+        <img src="/img/profile.jpg" alt="프로필 사진" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+
+    <!-- 이름, 아이디, 비밀번호 -->
+    <div class="text-center">
+        <p><strong>이름:</strong> {{name}}</p>
+        <p><strong>아이디:</strong> {{userid}}</p>
+        <p><strong>비밀번호:</strong> {{password}}</p>
+    </div>
+</div>
+
+{{>layouts/footer}}
+
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
