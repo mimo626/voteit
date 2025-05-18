@@ -65,6 +65,7 @@ public class MemberController {
                 log.info("로그인 에러-비밀번호 오류");
                 return "member/login";
             }
+            // 세션에 유저 정보 저장
             session.setAttribute("LOGIN_MEMBER", member.getUserid());
             log.info("로그인 성공");
             return "redirect:/voteit/main";
