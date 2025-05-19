@@ -53,7 +53,6 @@ public class MemberController {
     //로그인 실행 처리
     @PostMapping("/voteit/login")
     public String login(MemberForm memberForm, Model model, HttpSession session) {
-        memberForm.logInfo();
         Optional<Member> memberId = memberRepository.findMemberByUserid(memberForm.getUserid());
         if (memberId.isEmpty()) {
             model.addAttribute("loginError", "존재하지 않는 아이디입니다.");
@@ -62,6 +61,7 @@ public class MemberController {
         }
         else {
            Member member = memberId.get();
+           memberForm.setName(member.getName());
             if (!member.getPassword().equals(memberForm.getPassword())) {
                 model.addAttribute("loginError", "비밀번호가 올바르지 않습니다.");
                 log.info("로그인 에러-비밀번호 오류");
@@ -69,6 +69,7 @@ public class MemberController {
             }
             // 세션에 유저 정보 저장
             session.setAttribute("LOGIN_MEMBER", member.getUserid());
+            memberForm.logInfo();
             log.info("로그인 성공");
             return "redirect:/voteit/main";
         }
