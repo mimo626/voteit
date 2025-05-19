@@ -1,7 +1,9 @@
 package com.example.voteit.controller;
 
 import com.example.voteit.Entity.Question;
+import com.example.voteit.Entity.Vote;
 import com.example.voteit.Repository.QuestionRepository;
+import com.example.voteit.Repository.VoteRepository;
 import com.example.voteit.dto.QuestionForm;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,8 @@ public class QuestionController {
 
     @Autowired
     QuestionRepository questionRepository;
+    @Autowired
+    VoteRepository  voteRepository;
 
     // 메인 페이지
     @GetMapping("/voteit/main")
@@ -98,13 +102,27 @@ public class QuestionController {
 
     // 상세 페이지
     @GetMapping("/voteit/detail/{id}")
-    public String show(@PathVariable("id") Long id, Model model) {
+    public String show(@PathVariable("id") Long id, Model model, HttpSession session) {
         Question question = questionRepository.findById(id).orElse(null);
 
+        String loginUserId = (String) session.getAttribute("LOGIN_MEMBER");
+        Vote vote = voteRepository.findByUseridAndQuestionid(loginUserId, id); // 이미 투표한 경우 null 아님
+
+        if (vote != null) {
+            if ("찬성".equals(vote.getChoice())) {
+                model.addAttribute("isAgree", true);
+            } else if ("반대".equals(vote.getChoice())) {
+                model.addAttribute("isDisagree", true);
+            }
+            model.addAttribute("userVote", vote.getChoice());
+        }
+        else{
+            model.addAttribute("isAgree", false);
+            model.addAttribute("isDisagree", false);
+            model.addAttribute("userVote", "");
+        }
         model.addAttribute("question", question);
         return "question/detail";
     }
-
-
 }
 
