@@ -47,8 +47,8 @@
 
     <!-- 찬반 버튼 -->
     <div class="d-flex justify-content-center gap-4">
-        <button class="vote-btn agree" onclick="handleVote('agree')">찬성</button>
-        <button class="vote-btn disagree" onclick="handleVote('disagree')">반대</button>
+        <button class="vote-btn agree {{#isAgree}}selected{{/isAgree}}" onclick="handleVote('agree')">찬성</button>
+        <button class="vote-btn disagree {{#isDisagree}}selected{{/isDisagree}}" onclick="handleVote('disagree')">반대</button>
     </div>
 </div>
 
@@ -60,6 +60,9 @@
 <script>
     let agree = {{question.agreecount}};
     let disagree = {{question.disagreecount}};
+
+    // 서버에서 전달받은 유저 투표 상태
+    const userVote = "{{userVote}}"; // "찬성" or "반대" or ""
 
     function updateVoteBar() {
         const total = agree + disagree;
@@ -73,14 +76,45 @@
         document.querySelector('.vote-bar-disagree').textContent = disagreeRate + '%';
     }
 
+    let currentVote = userVote; // 사용자가 이미 투표한 선택
+
     function handleVote(type) {
-        if (type === 'agree') agree++;
-        else if (type === 'disagree') disagree++;
+        if (currentVote === type) {
+            // 이미 투표한 항목 재클릭은 무시
+            return;
+        }
+
+        if (type === 'agree') {
+            agree++;
+            if (currentVote === 'disagree') disagree--; // 이전 투표 취소
+            currentVote = 'agree';
+        } else if (type === 'disagree') {
+            disagree++;
+            if (currentVote === 'agree') agree--;
+            currentVote = 'disagree';
+        }
+
         updateVoteBar();
+        updateButtonStyle();
     }
 
-    // 초기화
-    document.addEventListener('DOMContentLoaded', updateVoteBar);
+    function updateButtonStyle() {
+        const agreeBtn = document.querySelector('.vote-btn.agree');
+        const disagreeBtn = document.querySelector('.vote-btn.disagree');
+
+        if (currentVote === 'agree') {
+            agreeBtn.classList.add('selected');
+            disagreeBtn.classList.remove('selected');
+        } else if (currentVote === 'disagree') {
+            disagreeBtn.classList.add('selected');
+            agreeBtn.classList.remove('selected');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateVoteBar();
+        updateButtonStyle();
+    });
 </script>
 
 

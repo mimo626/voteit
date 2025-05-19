@@ -169,16 +169,41 @@ body {
 }
 
 
+.vote-btn {
+    padding: 0.5rem 1.5rem;
+    border: 2px solid transparent;
+    border-radius: 25px;
+    font-weight: bold;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+/* 기본 찬성 버튼 */
 .vote-btn.agree {
     color: #4d79ff;
-    box-shadow: 0 4px 12px rgba(77, 121, 255, 0.5); /* 파란 그림자 */
+    border-color: #4d79ff;
+    box-shadow: 0 4px 12px rgba(77, 121, 255, 0.5);
 }
 
-
+/* 기본 반대 버튼 */
 .vote-btn.disagree {
     color: #ff4d4d;
-    box-shadow: 0 4px 12px rgba(255, 77, 77, 0.5); /* 빨간 그림자 */
+    border-color: #ff4d4d;
+    box-shadow: 0 4px 12px rgba(255, 77, 77, 0.5);
 }
+
+/* 선택된 상태일 때 - 찬성 */
+.vote-btn.agree.selected {
+    background-color: #4d79ff;
+    color: white;
+}
+
+/* 선택된 상태일 때 - 반대 */
+.vote-btn.disagree.selected {
+    background-color: #ff4d4d;
+    color: white;
+}
+
 
 
 .vote-btn:hover {
