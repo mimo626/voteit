@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -22,14 +23,22 @@ public class QuestionController {
     @Autowired
     QuestionRepository questionRepository;
 
-    //메인 페이지
+    // 메인 페이지
     @GetMapping("/voteit/main")
-    public String show(Model model) {
-        List<Question> questionList = questionRepository.findAll();
+    public String show(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+        // 로그인 사용자 정보 가져오기
+        Object loginMember = session.getAttribute("LOGIN_MEMBER");
+        if (loginMember == null) {
+            redirectAttributes.addFlashAttribute("loginMessage", "로그인 후 이용해주세요.");
+            return "redirect:/voteit/login";
+        }
 
+        // 기존 로직은 그대로 유지
+        List<Question> questionList = questionRepository.findAll();
         model.addAttribute("questionList", questionList);
         return "question/main";
     }
+
 
     // 질문 등록 페이지
     @GetMapping("/voteit/questionAdd")
@@ -67,7 +76,7 @@ public class QuestionController {
         Question saved = questionRepository.save(question);
         log.info("질문 등록 성공");
 
-        return "redirect:/voteit/main";
+        return "redirect:/voteit/detail/"+saved.getId();
     }
 
     // 미입력 시 에러 처리
@@ -86,5 +95,16 @@ public class QuestionController {
         }
         return null;
     }
+
+    // 상세 페이지
+    @GetMapping("/voteit/detail/{id}")
+    public String show(@PathVariable("id") Long id, Model model) {
+        Question question = questionRepository.findById(id).orElse(null);
+
+        model.addAttribute("question", question);
+        return "question/detail";
+    }
+
+
 }
 

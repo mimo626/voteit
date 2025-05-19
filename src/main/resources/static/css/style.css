@@ -47,29 +47,50 @@ body {
 }
 
 /* 폼 */
-.custom-form-container {
-    display: flex;
-    justify-content: center;
-    align-items: start;
-    height: 100vh;
-    padding-top: 80px; /* navbar와 거리 확보 */
-}
-
+/* 폼 전체 */
 .custom-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     min-width: 400px;
-    min-height: 550px; /* 폼의 높이를 키움 */
+    min-height: 550px;
     background-color: #f9fff5;
-    padding: 6rem;
+    padding: 2rem;
     border-radius: 0.75rem;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-/* 폼 내부 각 행 간격 */
+/* 각 행 사이 여백 */
 .custom-form td {
     padding-bottom: 1.5rem;
 }
 
+/* 버튼 스타일 */
 .btn-success {
     background-color: #77dd77;
     border: none;
 }
+
+/* 메인 컨텐츠 여백 */
+.custom-main {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* 테이블을 화면 너비 꽉 차게, 좌우 여백만 유지 */
+.table-wrapper {
+    width: 100%;
+    padding: 20px 100px;
+}
+
+/* 테이블 스타일 */
+.table {
+    width: 100%;
+    table-layout: auto;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
