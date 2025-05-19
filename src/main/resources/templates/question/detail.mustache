@@ -16,40 +16,73 @@
 <body class="d-flex flex-column min-vh-100">
 {{>layouts/header}}
 
-<div class="table-wrapper">
-    <table class="table">
-        <thead>
-        <tr><th>제목</th><th>작성자</th><th>마감일</th><th>등록일</th><th>상태</th></tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>{{question.title}}</td>
-            <td>{{question.userid}}</td>
-            <td>{{question.deadline}}</td>
-            <td>{{question.regdate}}</td>
-            <td>{{question.state}}</td>
-        </tr>
-        </tbody>
-    </table>
+<div class="container py-4">
+    <!--상단 요약-->
+    <div class="d-flex justify-content-between align-items-center bg-light rounded shadow-sm mb-4 summary-box">
+        <div class="question-meta">
+            <h5><strong>{{question.title}}</strong></h5>
+            <span>{{question.userid}}</span>
+        </div>
+        <div class="text-end">
+            <span class="badge bg-info text-dark">D-7</span>
+            <p>{{question.regdate}}</p>
+        </div>
+    </div>
 
-    <table class="table">
-        <thead>
-        <tr><th>내용</th><th>찬성 수</th><th>반대 수</th></tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>{{question.content}}</td>
-            <td>{{question.agreecount}}</td>
-            <td>{{question.disagreecount}}</td>
-        </tr>
-        </tbody>
-    </table>
+    <!-- 본문 내용 -->
+    <div class="mb-4">
+        <h5><span class="badge bg-teal text-white">{{question.state}}</span></h5>
+        <div class="border rounded content-box expanded-box">
+            <p>{{question.content}}</p>
+        </div>
+    </div>
+
+    <!-- 찬반 퍼센트 바 -->
+    <div class="vote-bar mb-3">
+        <div class="vote-bar-inner">
+            <div class="vote-bar-agree" style="width: {{question.agreecount}}%;">{{question.agreecount}}%</div>
+            <div class="vote-bar-disagree" style="width: {{question.disagreecount}}%;">{{question.disagreecount}}%</div>
+        </div>
+    </div>
+
+    <!-- 찬반 버튼 -->
+    <div class="d-flex justify-content-center gap-4">
+        <button class="vote-btn agree" onclick="handleVote('agree')">찬성</button>
+        <button class="vote-btn disagree" onclick="handleVote('disagree')">반대</button>
+    </div>
 </div>
+
 
 {{>layouts/footer}}
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    let agree = {{question.agreecount}};
+    let disagree = {{question.disagreecount}};
+
+    function updateVoteBar() {
+        const total = agree + disagree;
+        const agreeRate = total === 0 ? 50 : Math.round((agree / total) * 100);
+        const disagreeRate = 100 - agreeRate;
+
+        document.querySelector('.vote-bar-agree').style.width = agreeRate + '%';
+        document.querySelector('.vote-bar-agree').textContent = agreeRate + '%';
+
+        document.querySelector('.vote-bar-disagree').style.width = disagreeRate + '%';
+        document.querySelector('.vote-bar-disagree').textContent = disagreeRate + '%';
+    }
+
+    function handleVote(type) {
+        if (type === 'agree') agree++;
+        else if (type === 'disagree') disagree++;
+        updateVoteBar();
+    }
+
+    // 초기화
+    document.addEventListener('DOMContentLoaded', updateVoteBar);
+</script>
+
 
 </body>
 </html>
