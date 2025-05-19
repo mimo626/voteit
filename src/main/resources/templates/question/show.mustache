@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>내 질문 목록</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+{{>layouts/header}}
+
+<div class="container py-5">
+    <h3 class="mb-4">내 질문 목록</h3>
+
+    {{#questionList}}
+        <!-- 반복 블록이 여기 있는 게 문제 -->
+    {{/questionList}}
+        <!-- ✅ 반복 전에 <table>을 딱 한 번 선언 -->
+        <div class="table-wrapper">
+            <table class="table custom-table">
+                <thead>
+                <tr><th>제목</th><th>작성자</th><th>마감일</th><th>등록일</th><th>상태</th></tr>
+                </thead>
+                <tbody>
+                {{#questionList}}
+                    <tr>
+                        <td><a href="/voteit/detail/{{id}}">{{title}}</a></td>
+                        <td>{{userid}}</td>
+                        <td>{{deadline}}</td>
+                        <td>{{regdate}}</td>
+                        <td>{{state}}</td>
+                    </tr>
+                {{/questionList}}
+                </tbody>
+            </table>
+        </div>
+    {{^questionList}}
+        <p class="text-muted">등록된 질문이 없습니다.</p>
+    {{/questionList}}
+</div>
+
+
+{{>layouts/footer}}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

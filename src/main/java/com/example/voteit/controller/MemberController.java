@@ -12,7 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import com.example.voteit.Entity.Question;
+import com.example.voteit.cls.QuestionService;
 import java.util.List;
 import java.util.Optional;
 
@@ -112,5 +113,37 @@ public class MemberController {
 
         return "member/profile";
     }
+
+    @Autowired
+    private QuestionService questionService;
+
+    @GetMapping("/voteit/show")
+    public String showQ(HttpSession session, RedirectAttributes redirectAttributes, Model model) {
+        Object loginMember = session.getAttribute("LOGIN_MEMBER");
+        if (loginMember == null) {
+            redirectAttributes.addFlashAttribute("loginMessage", "로그인 후 확인이 가능합니다.");
+            return "redirect:/voteit/login";
+        }
+
+        String userid = loginMember.toString();
+
+        Member member = memberService.findByUserid(userid);
+        if (member == null) {
+            redirectAttributes.addFlashAttribute("loginMessage", "존재하지 않는 회원입니다.");
+            return "redirect:/voteit/login";
+        }
+
+        // ✅ 질문 목록 조회
+        List<Question> questionList = questionService.findByUserid(userid);
+
+        model.addAttribute("name", member.getName());
+        model.addAttribute("userid", member.getUserid());
+        model.addAttribute("password", member.getPassword()); // 비밀번호 마스킹
+        model.addAttribute("questionList", questionList); // ✅ mustache로 넘겨줄 목록 추가
+
+        return "question/show";
+    }
+
+
 }
 
