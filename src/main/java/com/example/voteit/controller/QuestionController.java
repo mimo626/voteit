@@ -90,6 +90,9 @@ public class QuestionController {
         if (form.getDeadline() == null) {
             return "마감기한을 선택해 주세요.";
         }
+        if(form.getDeadline().isBefore(LocalDate.now())){
+            return "마감기한을 오늘 이후 날짜로 선택해 주세요.";
+        }
         return null;
     }
 
