@@ -16,14 +16,18 @@
 <body class="d-flex flex-column min-vh-100">
 {{>layouts/header}}
 <div class="table-wrapper">
-    <table class="table">
+    <table class="table custom-table">
         <thead>
-        <tr><th>Title</th><th>UserId</th><th>DeadLine</th><th>RegDate</th><th>State</th></tr>
+        <tr><th>제목</th><th>작성자</th><th>마감일</th><th>등록일</th><th>상태</th></tr>
         </thead>
         <tbody>
         {{#questionList}}
             <tr>
-                <td><a href="/voteit/detail/{{id}}">{{title}}</a></td><td>{{userid}}</td><td>{{deadline}}</td><th>{{regdate}}</th><th>{{state}}</th>
+                <td><a href="/voteit/detail/{{id}}">{{title}}</a></td>
+                <td>{{userid}}</td>
+                <td>{{deadline}}</td>
+                <td>{{regdate}}</td>
+                <td>{{state}}</td>
             </tr>
         {{/questionList}}
         </tbody>
