@@ -16,4 +16,7 @@ public class QuestionService {
         return questionRepository.findByUserid(userid);
     }
 
+    public Question findByid(Long id) {
+        return questionRepository.findByid(id);
+    }
 }
