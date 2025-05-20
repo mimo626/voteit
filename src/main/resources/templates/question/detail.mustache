@@ -84,6 +84,8 @@
             return;
         }
 
+        const previousVote = currentVote;
+
         if (type === 'agree') {
             agree++;
             if (currentVote === 'disagree') disagree--; // 이전 투표 취소
@@ -96,6 +98,47 @@
 
         updateVoteBar();
         updateButtonStyle();
+
+        // 서버에 투표 정보 전송
+        fetch(`/vote/{{question.id}}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ voteType: type })  // type: 'agree' or 'disagree'
+        })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.success) {
+                        // 실패 시 롤백
+                        alert("투표에 실패했습니다.");
+                        // 이전 상태로 복구
+                        if (currentVote === 'agree') {
+                            agree--;
+                            if (previousVote === 'disagree') disagree++;
+                        } else {
+                            disagree--;
+                            if (previousVote === 'agree') agree++;
+                        }
+                        currentVote = previousVote;
+                        updateVoteBar();
+                        updateButtonStyle();
+                    }
+                })
+                .catch(error => {
+                    alert("서버 요청 중 오류가 발생했습니다.");
+                    console.error("Error:", error);
+
+                    // 오류 시 롤백
+                    if (currentVote === 'agree') {
+                        agree--;
+                        if (previousVote === 'disagree') disagree++;
+                    } else {
+                        disagree--;
+                        if (previousVote === 'agree') agree++;
+                    }
+                    currentVote = previousVote;
+                    updateVoteBar();
+                    updateButtonStyle();
+                });
     }
 
     function updateButtonStyle() {
