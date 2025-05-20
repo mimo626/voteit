@@ -1,6 +1,9 @@
 package com.example.voteit.controller;
 
+import com.example.voteit.Entity.Vote;
+import com.example.voteit.Repository.VoteRepository;
 import com.example.voteit.cls.MemberService;
+import com.example.voteit.dto.QuestionVoteForm;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import com.example.voteit.Entity.Member;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.voteit.Entity.Question;
 import com.example.voteit.cls.QuestionService;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +28,12 @@ public class MemberController {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    VoteRepository voteRepository;
+
+    @Autowired
+    private QuestionService questionService;
 
     //회원가입 페이지
     @GetMapping("/voteit/signup")
@@ -114,9 +125,6 @@ public class MemberController {
         return "member/profile";
     }
 
-    @Autowired
-    private QuestionService questionService;
-
     @GetMapping("/voteit/show")
     public String showQ(HttpSession session, RedirectAttributes redirectAttributes, Model model) {
         Object loginMember = session.getAttribute("LOGIN_MEMBER");
@@ -142,6 +150,27 @@ public class MemberController {
         model.addAttribute("questionList", questionList); // ✅ mustache로 넘겨줄 목록 추가
 
         return "question/show";
+    }
+
+    @GetMapping("/voteit/myVoteList")
+    public  String showMyVoteList(HttpSession session, RedirectAttributes redirectAttributes, Model model) {
+        String userid = (String) session.getAttribute("LOGIN_MEMBER");
+        if (userid == null) {
+            redirectAttributes.addFlashAttribute("loginMessage", "로그인 후 확인이 가능합니다.");
+            return "redirect:/voteit/login";
+        }
+
+        List<Vote> voteList = voteRepository.findByUserid(userid);
+        log.info("voteList : {}", voteList);
+        List<QuestionVoteForm> myVotes = new ArrayList<>();
+        for(Vote vote : voteList){
+            Question question = questionService.findByid(vote.getQuestionid());
+            QuestionVoteForm myVote = new QuestionVoteForm(question.getId(), question.getTitle(), vote.getChoice(), question.getState());
+            myVotes.add(myVote);
+        }
+        log.info("myVotes : {}", myVotes);
+        model.addAttribute("myVotes", myVotes);
+        return "member/votes";
     }
 
 
