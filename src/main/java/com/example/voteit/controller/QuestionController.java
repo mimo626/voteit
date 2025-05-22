@@ -36,8 +36,15 @@ public class QuestionController {
             return "redirect:/voteit/login";
         }
 
-        // 기존 로직은 그대로 유지
+        // 마감기한 처리
         List<Question> questionList = questionRepository.findAll();
+        for(Question question : questionList){
+            if(question.getDeadline().isBefore(LocalDate.now())){
+                questionRepository.delete(question);
+            }
+        }
+        questionList = questionRepository.findAll();
+
         model.addAttribute("questionList", questionList);
         return "question/main";
     }
