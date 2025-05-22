@@ -10,13 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -37,8 +36,16 @@ public class QuestionController {
             return "redirect:/voteit/login";
         }
 
-        // 기존 로직은 그대로 유지
+        // 마감기한 처리
         List<Question> questionList = questionRepository.findAll();
+        for(Question question : questionList){
+            if(question.getDeadline().isBefore(LocalDate.now())){
+                question.setState("종료");
+                questionRepository.save(question);
+            }
+        }
+        questionList = questionRepository.findAll();
+
         model.addAttribute("questionList", questionList);
         return "question/main";
     }
@@ -124,5 +131,27 @@ public class QuestionController {
         model.addAttribute("question", question);
         return "question/detail";
     }
+
+    // 투표 기능 처리
+    @PostMapping("/vote/{questionId}")
+    @ResponseBody
+    public Map<String, Object> vote(@PathVariable Long questionId,
+                                    @RequestBody Map<String, String> payload,
+                                    HttpSession session) {
+        String userId = (String) session.getAttribute("LOGIN_MEMBER");
+        String newChoice = payload.get("voteType").equals("agree") ? "찬성" : "반대";
+
+        Vote vote = voteRepository.findByUseridAndQuestionid(userId, questionId);
+        if (vote == null) {
+            vote = new Vote(userId, questionId, newChoice, LocalDate.now());
+        } else {
+            vote.setChoice(newChoice);
+            vote.setVotedate(LocalDate.now());
+        }
+        voteRepository.save(vote);
+
+        return Map.of("success", true);
+    }
+
 }
 

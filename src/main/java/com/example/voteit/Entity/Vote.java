@@ -25,7 +25,6 @@ public class Vote {
 
     private String userid;
 
-    @Column(name = "questionid")
     private Long questionid;
 
     private String choice; // "찬성" or "반대"
