@@ -16,6 +16,20 @@
 
 <div class="container py-5">
     <h3 class="mb-4">내 질문 목록</h3>
+    {{#successMessage}}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{successMessage}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {{/successMessage}}
+
+    {{#errorMessage}}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{errorMessage}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {{/errorMessage}}
+
 
     {{#questionList}}
         <!-- 반복 블록이 여기 있는 게 문제 -->
@@ -24,7 +38,7 @@
         <div class="table-wrapper">
             <table class="table custom-table">
                 <thead>
-                <tr><th>제목</th><th>작성자</th><th>마감일</th><th>등록일</th><th>상태</th></tr>
+                <tr><th>제목</th><th>작성자</th><th>마감일</th><th>등록일</th><th>상태</th><th>삭제</th></tr>
                 </thead>
                 <tbody>
                 {{#questionList}}
@@ -34,6 +48,11 @@
                         <td>{{deadline}}</td>
                         <td>{{regdate}}</td>
                         <td>{{state}}</td>
+                        <td>
+                            <form action="/voteit/delete/{{id}}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                                <button type="submit" class="btn btn-sm btn-danger">삭제</button>
+                            </form>
+                        </td>
                     </tr>
                 {{/questionList}}
                 </tbody>

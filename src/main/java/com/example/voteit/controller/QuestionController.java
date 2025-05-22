@@ -152,6 +152,31 @@ public class QuestionController {
 
         return Map.of("success", true);
     }
+    @PostMapping("/voteit/delete/{id}")
+    public String deleteQuestion(@PathVariable Long id, HttpSession session, RedirectAttributes redirectAttributes) {
+        String loginUserId = (String) session.getAttribute("LOGIN_MEMBER");
+
+        Question question = questionRepository.findById(id).orElse(null);
+        if (question == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "해당 질문을 찾을 수 없습니다.");
+            return "redirect:/voteit/show";
+        }
+
+        if (!question.getUserid().equals(loginUserId)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "본인이 작성한 질문만 삭제할 수 있습니다.");
+            return "redirect:/voteit/show";
+        }
+
+        // 먼저 해당 질문에 대한 투표 내역도 함께 삭제
+        voteRepository.deleteAll(voteRepository.findByQuestionid(id));
+
+        // 질문 삭제
+        questionRepository.deleteById(id);
+        redirectAttributes.addFlashAttribute("successMessage", "질문이 삭제되었습니다.");
+
+        return "redirect:/voteit/show";
+    }
+
 
 }
 

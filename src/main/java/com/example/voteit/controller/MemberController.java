@@ -173,6 +173,40 @@ public class MemberController {
         return "member/votes";
     }
 
+    @GetMapping("/voteit/profile/edit-password")
+    public String editPasswordForm(HttpSession session, RedirectAttributes redirectAttributes, Model model) {
+        String userid = (String) session.getAttribute("LOGIN_MEMBER");
+        if (userid == null) {
+            redirectAttributes.addFlashAttribute("loginMessage", "로그인 후 확인이 가능합니다.");
+            return "redirect:/voteit/login";
+        }
+
+        Member member = memberService.findByUserid(userid);
+        if (member == null) {
+            redirectAttributes.addFlashAttribute("loginMessage", "존재하지 않는 회원입니다.");
+            return "redirect:/voteit/login";
+        }
+
+        model.addAttribute("userid", member.getUserid());
+        return "member/edit-password";
+    }
+
+    @PostMapping("/voteit/profile/update-password")
+    public String updatePassword(HttpSession session,
+                                 RedirectAttributes redirectAttributes,
+                                 String newPassword) {
+        String userid = (String) session.getAttribute("LOGIN_MEMBER");
+        if (userid == null) {
+            redirectAttributes.addFlashAttribute("loginMessage", "로그인 후 확인이 가능합니다.");
+            return "redirect:/voteit/login";
+        }
+
+        memberService.updatePassword(userid, newPassword);
+        redirectAttributes.addFlashAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");
+        return "redirect:/voteit/profile";
+    }
+
+
 
 }
 
