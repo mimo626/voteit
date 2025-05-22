@@ -40,7 +40,8 @@ public class QuestionController {
         List<Question> questionList = questionRepository.findAll();
         for(Question question : questionList){
             if(question.getDeadline().isBefore(LocalDate.now())){
-                questionRepository.delete(question);
+                question.setState("종료");
+                questionRepository.save(question);
             }
         }
         questionList = questionRepository.findAll();
