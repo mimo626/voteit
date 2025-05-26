@@ -11,4 +11,6 @@ public interface VoteRepository extends CrudRepository<Vote, Long> {
     Vote findByUseridAndQuestionid(String loginUserId, Long id);
 
     List<Vote> findByUserid(String userid);
+    List<Vote> findByQuestionid(Long questionid);
+
 }

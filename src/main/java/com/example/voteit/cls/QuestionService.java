@@ -19,4 +19,8 @@ public class QuestionService {
     public Question findByid(Long id) {
         return questionRepository.findByid(id);
     }
+    public List<Question> findQuestionsOrderByVoteCount() {
+        return questionRepository.findQuestionsOrderByVoteCount();
+    }
+
 }

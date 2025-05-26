@@ -18,7 +18,7 @@ public class MemberService {
         return memberOptional.orElse(null);
     }
     public void updatePassword(String userid, String newPassword) {
-        Member member = memberRepository.findByUserid(userid).orElse(null);
+        Member member = memberRepository.findMemberByUserid(userid).orElse(null);
         if (member != null) {
             member.setPassword(newPassword); // 보안 위해 암호화 추천
             memberRepository.save(member);

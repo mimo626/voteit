@@ -1,6 +1,7 @@
 package com.example.voteit.Repository;
 
 import com.example.voteit.Entity.Question;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,5 +17,9 @@ public interface QuestionRepository extends CrudRepository<Question, Long> {
 
 
     Question findByid(Long id);
+
+    @Query("SELECT q FROM Question q ORDER BY (q.agreecount + q.disagreecount) DESC")
+    List<Question> findQuestionsOrderByVoteCount();
+
 }
 

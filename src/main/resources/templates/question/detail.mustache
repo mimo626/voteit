@@ -24,7 +24,7 @@
             <span>{{question.userid}}</span>
         </div>
         <div class="text-end">
-            <span class="badge text-dark" style="background-color: #ccffcc;">D-7</span>
+            <span id="dDayBadge" class="badge text-dark" style="background-color: #ccffcc;" data-deadline="{{question.deadline}}"></span>
             <p>{{question.regdate}}</p>
         </div>
     </div>
@@ -158,6 +158,36 @@
         updateVoteBar();
         updateButtonStyle();
     });
+        document.addEventListener('DOMContentLoaded', () => {
+        const badge = document.getElementById("dDayBadge");
+        const deadlineStr = badge.getAttribute("data-deadline");
+
+        if (deadlineStr) {
+            const deadline = new Date(deadlineStr);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const diff = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+            let dDayText = "";
+
+        if (diff > 0) {
+            dDayText = `D-${diff}`;
+        }
+        else if (diff === 0) {
+            dDayText = "D-DAY";
+        }
+        else {
+            dDayText = "마감됨";
+        }
+
+            badge.textContent = dDayText;
+        }
+        else {
+            badge.textContent = "날짜 없음";
+        }
+    });
+
+
 </script>
 
 

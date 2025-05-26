@@ -4,6 +4,7 @@ import com.example.voteit.Entity.Question;
 import com.example.voteit.Entity.Vote;
 import com.example.voteit.Repository.QuestionRepository;
 import com.example.voteit.Repository.VoteRepository;
+import com.example.voteit.cls.QuestionService;
 import com.example.voteit.dto.QuestionForm;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,8 @@ public class QuestionController {
     QuestionRepository questionRepository;
     @Autowired
     VoteRepository  voteRepository;
+    @Autowired
+    private QuestionService questionService;
 
     // 메인 페이지
     @GetMapping("/voteit/main")
@@ -177,6 +180,30 @@ public class QuestionController {
         return "redirect:/voteit/show";
     }
 
+    @GetMapping("/voteit/hot")
+    public String showHotQuestions(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+        // 로그인 확인
+        Object loginMember = session.getAttribute("LOGIN_MEMBER");
+        if (loginMember == null) {
+            redirectAttributes.addFlashAttribute("loginMessage", "로그인 후 이용해주세요.");
+            return "redirect:/voteit/login";
+        }
+
+        // 마감 상태 업데이트
+        List<Question> questionList = questionRepository.findAll();
+        for (Question question : questionList) {
+            if (question.getDeadline().isBefore(LocalDate.now())) {
+                question.setState("종료");
+                questionRepository.save(question);
+            }
+        }
+
+        // 🔥 서비스 통해 HOT 질문 가져오기
+        List<Question> hotQuestions = questionService.findQuestionsOrderByVoteCount();
+
+        model.addAttribute("questionList", hotQuestions);
+        return "question/main"; // 기존 main 템플릿 재사용
+    }
 
 }
 
