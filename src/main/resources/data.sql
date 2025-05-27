@@ -19,7 +19,7 @@ INSERT INTO question (
 
 -- 투표 정보
 INSERT INTO vote (userid, questionid, choice, votedate) VALUES
-    ('kys6034', 1, '찬성', '2025-05-10'),
-    ('minju0626', 1, '반대', '2025-05-10'),
-    ('kys6034', 2, '찬성', '2025-05-12'),
-    ('minju0626', 2, '찬성', '2025-05-12');
+    ('kys6034', 1, 'agree', '2025-05-10'),
+    ('minju0626', 1, 'disagree', '2025-05-10'),
+    ('kys6034', 2, 'agree', '2025-05-12'),
+    ('minju0626', 2, 'agree', '2025-05-12');
