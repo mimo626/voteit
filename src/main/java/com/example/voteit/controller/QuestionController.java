@@ -150,27 +150,26 @@ public class QuestionController {
 
             vote = new Vote(userId, questionId, newChoice, LocalDate.now());
             if(newChoice.equals("agree")) {
-                question.setDisagreecount(question.getDisagreecount() + 1);
-            } else if(newChoice.equals("disagree")) {
                 question.setAgreecount(question.getAgreecount() + 1);
+            } else if(newChoice.equals("disagree")) {
+                question.setDisagreecount(question.getDisagreecount() + 1);
             }
         } else {
             String oldChoice = vote.getChoice();
 
             if (oldChoice.equals(newChoice)) {
-                System.out.println("같음");
                 return Map.of("success", true);
             }
             else{
                 // 새로운 choice count 증가
-//                if (newChoice.equals("agree")) {
-//                    question.setAgreecount(question.getAgreecount() + 1);
-//                    question.setDisagreecount(question.getDisagreecount() - 1);
-//
-//                } else if (newChoice.equals("disagree")) {
-//                    question.setDisagreecount(question.getDisagreecount() + 1);
-//                    question.setAgreecount(question.getAgreecount() - 1);
-//                }
+                if (newChoice.equals("agree")) {
+                    question.setAgreecount(question.getAgreecount() + 1);
+                    question.setDisagreecount(question.getDisagreecount() - 1);
+
+                } else if (newChoice.equals("disagree")) {
+                    question.setDisagreecount(question.getDisagreecount() + 1);
+                    question.setAgreecount(question.getAgreecount() - 1);
+                }
                 vote.setChoice(newChoice);
                 vote.setVotedate(LocalDate.now());
             }
@@ -178,6 +177,7 @@ public class QuestionController {
         }
         voteRepository.save(vote);
         questionRepository.save(question);
+        System.out.println("찬성 수: " + question.getAgreecount() + "반대 수: " + question.getDisagreecount());
 
         return Map.of("success", true);
     }
