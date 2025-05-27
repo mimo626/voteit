@@ -119,9 +119,9 @@ public class QuestionController {
         Vote vote = voteRepository.findByUseridAndQuestionid(loginUserId, id); // 이미 투표한 경우 null 아님
 
         if (vote != null) {
-            if ("찬성".equals(vote.getChoice())) {
+            if ("agree".equals(vote.getChoice())) {
                 model.addAttribute("isAgree", true);
-            } else if ("반대".equals(vote.getChoice())) {
+            } else if ("disagree".equals(vote.getChoice())) {
                 model.addAttribute("isDisagree", true);
             }
             model.addAttribute("userVote", vote.getChoice());
@@ -142,16 +142,42 @@ public class QuestionController {
                                     @RequestBody Map<String, String> payload,
                                     HttpSession session) {
         String userId = (String) session.getAttribute("LOGIN_MEMBER");
-        String newChoice = payload.get("voteType").equals("agree") ? "찬성" : "반대";
+        String newChoice = payload.get("voteType").equals("agree") ? "agree" : "disagree";
+        Question question = questionRepository.findById(questionId).orElse(null);
 
         Vote vote = voteRepository.findByUseridAndQuestionid(userId, questionId);
         if (vote == null) {
+
             vote = new Vote(userId, questionId, newChoice, LocalDate.now());
+            if(newChoice.equals("agree")) {
+                question.setAgreecount(question.getAgreecount() + 1);
+            } else if(newChoice.equals("disagree")) {
+                question.setDisagreecount(question.getDisagreecount() + 1);
+            }
         } else {
-            vote.setChoice(newChoice);
-            vote.setVotedate(LocalDate.now());
+            String oldChoice = vote.getChoice();
+
+            if (oldChoice.equals(newChoice)) {
+                return Map.of("success", true);
+            }
+            else{
+                // 새로운 choice count 증가
+                if (newChoice.equals("agree")) {
+                    question.setAgreecount(question.getAgreecount() + 1);
+                    question.setDisagreecount(question.getDisagreecount() - 1);
+
+                } else if (newChoice.equals("disagree")) {
+                    question.setDisagreecount(question.getDisagreecount() + 1);
+                    question.setAgreecount(question.getAgreecount() - 1);
+                }
+                vote.setChoice(newChoice);
+                vote.setVotedate(LocalDate.now());
+            }
+
         }
         voteRepository.save(vote);
+        questionRepository.save(question);
+        System.out.println("찬성 수: " + question.getAgreecount() + "반대 수: " + question.getDisagreecount());
 
         return Map.of("success", true);
     }
